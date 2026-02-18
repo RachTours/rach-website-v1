@@ -208,17 +208,15 @@ app.use("/css", express.static(path.join(__dirname, "css"), staticOpts));
 app.use("/js", express.static(path.join(__dirname, "js"), staticOpts));
 app.use("/assets", express.static(path.join(__dirname, "assets"), staticOpts));
 app.use("/img", express.static(path.join(__dirname, "img"), staticOpts));
-app.use(
-  "/manifest.json",
-  express.static(path.join(__dirname, "manifest.json"), staticOpts),
+// Serve individual root files
+app.get("/manifest.json", (req, res) =>
+  res.sendFile(path.join(__dirname, "manifest.json")),
 );
-app.use(
-  "/robots.txt",
-  express.static(path.join(__dirname, "robots.txt"), staticOpts),
+app.get("/robots.txt", (req, res) =>
+  res.sendFile(path.join(__dirname, "robots.txt")),
 );
-app.use(
-  "/sitemap.xml",
-  express.static(path.join(__dirname, "sitemap.xml"), staticOpts),
+app.get("/sitemap.xml", (req, res) =>
+  res.sendFile(path.join(__dirname, "sitemap.xml")),
 );
 app.use(express.json({ limit: "10kb" }));
 app.use(cookieParser());
