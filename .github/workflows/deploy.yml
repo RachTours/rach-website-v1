@@ -28,7 +28,13 @@ jobs:
           port: ${{ secrets.HOSTINGER_PORT }}
           script: |
             cd ~/domains/rach-tours.com/public_html
-            git pull origin main
+            # Protect .env from git operations
+            cp .env /tmp/.env.backup 2>/dev/null || true
+            git fetch origin
+            git reset --hard origin/main
+            cp /tmp/.env.backup .env 2>/dev/null || true
+            # Install dependencies using Hostinger's Node path
+            export PATH="/opt/alt/alt-nodejs24/root/usr/bin:$PATH"
             npm install --production
             # Restart Node.js app via Hostinger's passenger
             mkdir -p tmp && touch tmp/restart.txt
