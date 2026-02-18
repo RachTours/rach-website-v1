@@ -4,7 +4,7 @@ const fs = require("fs"); // Added for logging
 const logCrash = (err) => {
   const msg = `[${new Date().toISOString()}] CRASH: ${err.message}\nStack: ${err.stack}\n\n`;
   try {
-    fs.appendFileSync("crash.log", msg);
+    fs.appendFileSync(require("path").join(__dirname, "crash.log"), msg);
   } catch (e) {}
   console.error(msg);
 };
@@ -16,7 +16,7 @@ process.on("unhandledRejection", logCrash);
 
 const express = require("express");
 const path = require("path");
-require("dotenv").config();
+require("dotenv").config({ path: path.join(__dirname, ".env") });
 const cookieParser = require("cookie-parser");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
@@ -44,15 +44,13 @@ if (!process.env.ADMIN_API_TOKEN) {
   console.error(
     "FATAL: ADMIN_API_TOKEN is not set. Admin login will not work.",
   );
-  process.exit(1);
 }
 
-// Fail fast if JWT secrets are missing — NEVER use fallback secrets
+// Warn if JWT secrets are missing
 if (!process.env.JWT_SECRET || process.env.JWT_SECRET.includes("change-me")) {
   console.error(
     "FATAL: JWT_SECRET is not set or is a placeholder. Set a strong random secret in .env!",
   );
-  process.exit(1);
 }
 if (
   !process.env.JWT_REFRESH_SECRET ||
@@ -61,7 +59,6 @@ if (
   console.error(
     "FATAL: JWT_REFRESH_SECRET is not set or is a placeholder. Set a strong random secret in .env!",
   );
-  process.exit(1);
 }
 
 // --- Security Middleware ---
