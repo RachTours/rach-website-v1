@@ -268,8 +268,12 @@ app.use((err, req, res, next) => {
 });
 
 // --- Server Activation ---
-app.listen(PORT, async () => {
-  console.log(`🚀 Server is running on port ${PORT}`);
+const serverPort = process.env.PORT || 3005;
+app.listen(serverPort, async () => {
+  console.log(`🚀 Server is running on port ${serverPort}`);
   console.log(`   Environment: ${isProduction ? "PRODUCTION" : "DEVELOPMENT"}`);
   await initDatabase();
 });
+
+// Export for Passenger compatibility
+module.exports = app;
