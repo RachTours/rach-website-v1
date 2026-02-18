@@ -1,9 +1,7 @@
 # Dependencies
 node_modules/
 
-# Environment
-.env
-.env.*
+# Environment template
 !.env.example
 
 # OS

@@ -30,8 +30,6 @@ jobs:
             cd ~/domains/rach-tours.com/public_html
             git fetch origin
             git reset --hard origin/main
-            # Write .env from GitHub Secret (secure, never in git)
-            echo "${{ secrets.ENV_FILE }}" > .env
             # Install dependencies using Hostinger's Node path
             export PATH="/opt/alt/alt-nodejs24/root/usr/bin:$PATH"
             npm install --production
