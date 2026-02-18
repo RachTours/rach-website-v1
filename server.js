@@ -10,7 +10,7 @@ const logCrash = (err) => {
 };
 process.on("uncaughtException", (err) => {
   logCrash(err);
-  process.exit(1); // Node.js best practice: exit after uncaught exception
+  // NOTE: Do NOT call process.exit() here — it kills Hostinger Passenger permanently
 });
 process.on("unhandledRejection", logCrash);
 
@@ -27,7 +27,7 @@ const { initDatabase, testConnection, pool } = require("./src/config/database");
 
 const app = express(); // Initialize Express App
 
-// --- 1. Configuration & Constants ---
+// PORT is set by Hostinger Passenger automatically — fallback to .env or 3005
 const PORT = process.env.PORT || 3005;
 
 // Warn if essential variables are missing
