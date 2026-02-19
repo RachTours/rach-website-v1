@@ -132,7 +132,7 @@ const TOURS = {
     category: "Local Tours & Experiences",
     price: 40,
     hideTransport: true,
-    images: ["img/airport.png", "img/pic2.jpg", "img/pic6.jpg ,https://www.bing.com/images/search?view=detailV2&ccid=kO8MeGEn&id=21763067310EC4115310C50E57B0A1032F21C55E&thid=OIP.kO8MeGEnIDkbiBcZj-91MAHaFF&mediaurl=https%3A%2F%2Ftaxi-dubai.ae%2Fwp-content%2Fuploads%2F2020%2F01%2F11-768x528.jpg&q=airport+transfers&ck=B59D5B0AEAD384D71937CE3457A908E7&expw=768&exph=528&form=rc2idp&cit=ccid_DbQcJJZU*cp_259E91C1DA1CE0F358DADBF509645009*mid_C585A44725D51EC431512E0CF91E59B0FD45A78F*thid_OIP.DbQcJJZUIPDutXiDAiecSwHaE8&selectedindex=0&cdnurl=https%3A%2F%2Fth.bing.com%2Fth%2Fid%2FR.90ef0c78612720391b8817198fef7530%3Frik%3DXsUhLwOhsFcOxQ%26pid%3DImgRaw%26r%3D0&vt=2&sim=11"],
+    images: ["img/airport.png", "img/pic2.jpg", "img/pic6.jpg","https://www.bing.com/images/search?view=detailV2&ccid=kO8MeGEn&id=21763067310EC4115310C50E57B0A1032F21C55E&thid=OIP.kO8MeGEnIDkbiBcZj-91MAHaFF&mediaurl=https%3A%2F%2Ftaxi-dubai.ae%2Fwp-content%2Fuploads%2F2020%2F01%2F11-768x528.jpg&q=airport+transfers&ck=B59D5B0AEAD384D71937CE3457A908E7&expw=768&exph=528&form=rc2idp&cit=ccid_DbQcJJZU*cp_259E91C1DA1CE0F358DADBF509645009*mid_C585A44725D51EC431512E0CF91E59B0FD45A78F*thid_OIP.DbQcJJZUIPDutXiDAiecSwHaE8&selectedindex=0&cdnurl=https%3A%2F%2Fth.bing.com%2Fth%2Fid%2FR.90ef0c78612720391b8817198fef7530%3Frik%3DXsUhLwOhsFcOxQ%26pid%3DImgRaw%26r%3D0&vt=2&sim=11"],
     details: [
       "Private comfortable vehicle",
       "Professional driver",
