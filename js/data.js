@@ -131,7 +131,7 @@ const TOURS = {
     subtitle: "Stress-free private transport",
     category: "Local Tours & Experiences",
     price: 40,
-    hideTransport: false,
+    hideTransport: true,
     images: ["img/airport.png", "img/pic2.jpg", "img/pic6.jpg"],
     details: [
       "Private comfortable vehicle",
