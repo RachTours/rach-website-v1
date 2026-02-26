@@ -299,7 +299,7 @@ nav.scrolled {
   position: absolute;
   top: 3px;
   right: 10px; /* Adjusted to fit nicely within the capsule button padding */
-  background: linear-gradient(135deg, #ff416c, #ff4b2b);
+  background: linear-gradient(135deg,  #ffb341, #ff4b2b);
   color: white;
   font-size: 0.75rem;
   font-weight: 800;
