@@ -110,11 +110,23 @@ export async function handleReservation(event) {
     // --- Frontend Security Validation ---
 
     // 1. Phone Validation
-    const phoneRegex = /^\+?[0-9]{7,15}$/;
-    if (!phone || !phoneRegex.test(phone.replace(/\s/g, ""))) {
+    let isPhoneValid = true;
+    if (window.phoneInputInstance) {
+      isPhoneValid = window.phoneInputInstance.validate();
+      if (!isPhoneValid) {
+         // Focus the input to show the user where the error is
+         const phoneField = document.getElementById("phone-input-field");
+         if (phoneField) phoneField.focus();
+      }
+    } else {
+        const phoneRegex = /^\+?[0-9]{7,15}$/;
+        isPhoneValid = phone && phoneRegex.test(phone.replace(/\s/g, ""));
+    }
+
+    if (!isPhoneValid) {
       showToast(
         "Validation Error",
-        "Please enter a valid phone number.",
+        "Please enter a valid phone number format.",
         "error",
       );
       throw new Error("Invalid phone number");
