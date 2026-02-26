@@ -6,6 +6,7 @@
 // 3. Give it a unique ID (e.g., "my-new-tour": { ... }).
 // 4. Update the title, subtitle, price, and details.
 // 5. Add images to the 'img/' folder and reference them in the 'images' array.
+// 6. Optionally add 'link' string for external booking references.
 // =========================================================================
 
 const TRANSPORT_FEE = 0; // dont change it
@@ -19,7 +20,7 @@ const TOURS = {
     category: "Local Tours & Experiences",
     hideTransport: false,
     price: 15,
-    images: ["img/souk.png", "img/pic4.jpg", "img/pic6.jpg"],
+    images: ["img/souk.png", "https://github.com/RachTours/rach-website-v1/blob/main/img/airport.png?raw=true","img/pic4.jpg", "img/pic6.jpg", "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AA1Iz5XP.img"],
     details: [
       "Duration: 1-4 Hours",
       "Pick up: Any time",

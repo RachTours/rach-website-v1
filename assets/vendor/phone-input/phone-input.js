@@ -68,10 +68,11 @@ class PhoneInput {
               autocomplete="tel"
               aria-label="Phone Number"
               aria-required="true"
+              required
             >
             <div class="validation-message" aria-live="polite">Please enter a valid phone number.</div>
           </div>
-          <input type="hidden" id="phone" name="phone">
+          <input type="hidden" id="phone" name="phone" required>
         </div>
       </div>
     `;
@@ -195,6 +196,26 @@ class PhoneInput {
   handlePhoneInput(e) {
     const input = e.target;
     let raw = input.value.replace(/\D/g, "");
+
+    // Automatically strip redundant country codes if pasted
+    if (this.selectedCountry) {
+        let bareDialCode = this.selectedCountry.dial_code.replace(/\D/g, ""); // e.g. "212"
+        let fullLocalCode = input.value; // The exact string they pasted
+
+        // Check if the pasted string effectively starts with the country code +212, 00212, or just 212
+        let startsWithPlusCode = fullLocalCode.startsWith(this.selectedCountry.dial_code);
+        let startsWithZeroZeroCode = fullLocalCode.startsWith("00" + bareDialCode);
+        let startsWithBareCode = fullLocalCode.startsWith(bareDialCode);
+
+        if (startsWithPlusCode || startsWithZeroZeroCode || startsWithBareCode) {
+           // We remove it from 'raw', which is just the digits
+           if (raw.startsWith(bareDialCode)) {
+               raw = raw.substring(bareDialCode.length);
+           } else if (raw.startsWith("00" + bareDialCode)) {
+               raw = raw.substring(bareDialCode.length + 2);
+           }
+        }
+    }
 
     // Auto-formatting based on country pattern
     const formatted = this.formatNumber(raw, this.selectedCountry.format);
