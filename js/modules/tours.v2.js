@@ -392,6 +392,14 @@ export function updateSelectedToursDisplay() {
   const totalContainer = document.getElementById("reservation-total-container");
   const totalValueSpan = document.getElementById("reservation-total-value");
   const guestsSelect = document.getElementById("guests");
+  const cartBadge = document.getElementById("nav-cart-badge");
+
+  // Update Nav Cart Badge
+  if (cartBadge) {
+    const count = state.selectedTours.length;
+    cartBadge.innerText = count;
+    cartBadge.style.display = count > 0 ? "flex" : "none";
+  }
 
   if (!input || !displayContainer || !containerWrapper || !guestsSelect) return;
 
