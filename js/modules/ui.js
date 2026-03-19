@@ -297,9 +297,10 @@ export function initCustomTimeDropdown() {
 // Update active nav item on scroll
 export function updateActiveNavItem() {
   const sections = document.querySelectorAll("section[id]");
-  const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+  const navLinks = document.querySelectorAll(".nav-links a");
   let current = "";
   const scrollPosition = window.scrollY + 100;
+
   sections.forEach((section) => {
     const htmlSection = section;
     const sectionTop = htmlSection.offsetTop;
@@ -312,10 +313,19 @@ export function updateActiveNavItem() {
       if (id) current = id;
     }
   });
+
   navLinks.forEach((link) => {
     link.classList.remove("active");
-    if (link.getAttribute("href") === `#${current}`) {
-      link.classList.add("active");
+    const href = link.getAttribute("href");
+    if (href) {
+      const isMatch =
+        href === `#${current}` ||
+        href.endsWith(`#${current}`) ||
+        (href.includes("#") && href.split("#")[1] === current);
+
+      if (isMatch && current !== "") {
+        link.classList.add("active");
+      }
     }
   });
 }

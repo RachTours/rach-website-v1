@@ -109,20 +109,29 @@ const initApp = async () => {
       }
     });
 
-    // Smooth Scroll
-    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    // Smooth Scroll - Handle both internal anchors and absolute URLs pointing to current page anchors
+    document.querySelectorAll('.nav-links a').forEach((anchor) => {
       anchor.addEventListener("click", function (e) {
-        e.preventDefault();
         const href = this.getAttribute("href");
         if (!href) return;
-        const targetHost = document.querySelector(href);
-        if (targetHost) {
-          document
-            .querySelectorAll(".nav-links a")
-            .forEach((Link) => Link.classList.remove("active"));
-          this.classList.add("active");
-          targetHost.scrollIntoView({ behavior: "smooth", block: "start" });
-          if (navLinks) navLinks.classList.remove("active");
+
+        // Check if it's an internal anchor or an absolute URL pointing to this page's domain
+        const isInternalAnchor = href.startsWith("#");
+        const isAbsoluteToThisPage = href.includes(window.location.hostname) && href.includes("#");
+
+        if (isInternalAnchor || isAbsoluteToThisPage) {
+          const targetId = isInternalAnchor ? href : "#" + href.split("#")[1];
+          const targetHost = document.querySelector(targetId);
+
+          if (targetHost) {
+            e.preventDefault();
+            document
+              .querySelectorAll(".nav-links a")
+              .forEach((Link) => Link.classList.remove("active"));
+            this.classList.add("active");
+            targetHost.scrollIntoView({ behavior: "smooth", block: "start" });
+            if (navLinks) navLinks.classList.remove("active");
+          }
         }
       });
     });
