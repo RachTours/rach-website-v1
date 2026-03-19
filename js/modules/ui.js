@@ -103,7 +103,11 @@ export function initCarousel() {
     tour.images.forEach((src) => {
       const slide = document.createElement("div");
       slide.className = "carousel-slide";
-      slide.innerHTML = `<img src="${src}" alt="${tour.title}" loading="lazy">`;
+      const img = document.createElement("img");
+      img.src = src;
+      img.alt = escapeHTML(tour.title);
+      img.loading = "lazy";
+      slide.appendChild(img);
       track.appendChild(slide);
     });
     dotsContainer.innerHTML = "";

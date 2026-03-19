@@ -26,6 +26,7 @@ import {
   confirmClearAll,
   updateGuestCount,
 } from "./modules/reservation.js";
+import { initBookingCalendar } from "./modules/booking-calendar.js";
 
 // --- Main Application Initialization ---
 const initApp = async () => {
@@ -267,6 +268,7 @@ const initializeAll = () => {
   initReviews();
   initPhoneInput();
   initFAQ();
+  initBookingCalendar();
 
   // Initialize input focus optimization
   import("./modules/ui.js").then((module) => {

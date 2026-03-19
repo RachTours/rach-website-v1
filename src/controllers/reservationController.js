@@ -6,18 +6,27 @@ const {
 } = require("../utils/stringUtils");
 const { pool } = require("../config/database");
 
-// Hardcoded data (cms-like)
 const { TOURS, TRANSPORT_FEE } = require("../../js/data.js");
 
 const WHATSAPP_TOKEN = process.env.WHATSAPP_TOKEN;
 const PHONE_NUMBER_ID = process.env.PHONE_NUMBER_ID;
 const MY_PHONE_NUMBER = process.env.MY_PHONE_NUMBER;
 
+/**
+ * Check if an env switch is enabled (defaults to true if not set)
+ */
+function isEnabled(envVar) {
+  if (!envVar) return true; // Default: enabled
+  return envVar.toLowerCase() !== "false";
+}
+
+/**
+ * POST /api/send-whatsapp
+ * Creates a reservation, saves to DB, then fires notifications (non-blocking).
+ */
 exports.createReservation = async (req, res) => {
-  // Check Validation Results
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    console.error("Validation Errors:", errors.array());
     return res.status(400).json({
       success: false,
       message: "Validation failed",
@@ -26,32 +35,15 @@ exports.createReservation = async (req, res) => {
   }
 
   try {
-    const { name, phone, date, time, guests, special, selectedTours } =
+    const { name, phone, date, time, guests, special, selectedTours, clientCreatedAt } =
       req.body;
 
-    // Log only non-PII metrics in development
-    if (process.env.NODE_ENV !== "production") {
-      console.log(
-        `New Reservation: ${selectedTours ? selectedTours.length : 0} tours selected.`,
-      );
-    }
-
     // Strict Type Validation
-    if (typeof selectedTours !== "object" || !Array.isArray(selectedTours)) {
+    if (!Array.isArray(selectedTours)) {
       return res
         .status(400)
         .json({ success: false, message: "Invalid tours data" });
     }
-
-    const safeGuests =
-      typeof guests === "string"
-        ? parseInt(guests, 10)
-        : (typeof guests === "number" ? guests : 1) || 1;
-    const safeName = typeof name === "string" ? name : String(name || "");
-    const safePhone = typeof phone === "string" ? phone : String(phone || "");
-    const safeDate = typeof date === "string" ? date : String(date || "");
-    const safeTime = typeof time === "string" ? time : String(time || "");
-    let safeSpecial = special && typeof special === "string" ? special : "";
 
     if (selectedTours.length === 0) {
       return res
@@ -59,56 +51,69 @@ exports.createReservation = async (req, res) => {
         .json({ success: false, message: "No tours selected." });
     }
 
-    // --- Message Construction ---
+    const safeGuests =
+      typeof guests === "string"
+        ? parseInt(guests, 10)
+        : typeof guests === "number"
+          ? guests
+          : 1;
+    const safeName = typeof name === "string" ? name : String(name || "");
+    const safePhone = typeof phone === "string" ? phone : String(phone || "");
+    const safeDate = typeof date === "string" ? date : String(date || "");
+    const safeTime = typeof time === "string" ? time : String(time || "");
+    let safeSpecial = special && typeof special === "string" ? special : "";
+
+    // --- Build tour details ---
     let anyTransport = false;
     let tourDetailsText = "";
     let totalReservationPrice = 0;
-
     const groups = {};
-    const enrichedTours = []; // New array to store detailed tour info for DB
+    const enrichedTours = [];
 
-    selectedTours.forEach((item) => {
+    for (const item of selectedTours) {
       const tourId = item.tourId;
       const tour = TOURS[tourId];
-      if (tour) {
-        if (!groups[tour.category]) {
-          groups[tour.category] = [];
-        }
-        const hasTransport = item.hasTransport === true;
-        const basePrice = tour.price;
-        const singlePersonPrice =
-          basePrice + (hasTransport ? TRANSPORT_FEE : 0);
-        const itemTotal = singlePersonPrice * safeGuests;
+      if (!tour) continue; // Skip unknown tour IDs silently
 
-        const enrichedItem = {
-          tourId: tourId,
-          title: tour.title,
-          category: tour.category,
-          pricePerPerson: singlePersonPrice,
-          basePrice: basePrice,
-          hasTransport: hasTransport,
-          transportFee: hasTransport ? TRANSPORT_FEE : 0,
-          guests: safeGuests,
-          totalPrice: itemTotal,
-        };
+      const hasTransport = item.hasTransport === true;
+      const basePrice = tour.price;
+      const singlePersonPrice = basePrice + (hasTransport ? TRANSPORT_FEE : 0);
+      const itemTotal = singlePersonPrice * safeGuests;
 
-        groups[tour.category].push({
-          title: tour.title,
-          hasTransport,
-          itemTotal,
-        });
+      if (hasTransport) anyTransport = true;
 
-        enrichedTours.push(enrichedItem);
+      if (!groups[tour.category]) groups[tour.category] = [];
+      groups[tour.category].push({
+        title: tour.title,
+        hasTransport,
+        itemTotal,
+      });
 
-        totalReservationPrice += itemTotal;
-      }
-    });
+      enrichedTours.push({
+        tourId,
+        title: tour.title,
+        category: tour.category,
+        pricePerPerson: singlePersonPrice,
+        basePrice,
+        hasTransport,
+        transportFee: hasTransport ? TRANSPORT_FEE : 0,
+        guests: safeGuests,
+        totalPrice: itemTotal,
+      });
+
+      totalReservationPrice += itemTotal;
+    }
+
+    if (enrichedTours.length === 0) {
+      return res
+        .status(400)
+        .json({ success: false, message: "No valid tours found." });
+    }
 
     for (const [category, items] of Object.entries(groups)) {
       const sectionTotal = items.reduce((sum, i) => sum + i.itemTotal, 0);
       tourDetailsText += `*${category}* (Total: $${sectionTotal}):\n`;
       items.forEach((item) => {
-        if (item.hasTransport) anyTransport = true;
         const transportSuffix = item.hasTransport ? " [🚕+Transport]" : "";
         tourDetailsText += `  • ${item.title} ($${item.itemTotal})${transportSuffix}\n`;
       });
@@ -130,6 +135,16 @@ exports.createReservation = async (req, res) => {
       ? "|🚕 *Transport Requested*|\n Send us your location to get the most relevant transport service."
       : "";
 
+    // --- Build WhatsApp messages ---
+    let cleanPhone = safePhone.replace(/\D/g, "");
+    const businessPhone = MY_PHONE_NUMBER || "212659727363";
+    const cleanBusinessPhone = businessPhone.replace(/\D/g, "");
+
+    const reconfirmText = `✅ Reservation Confirmed :\n👤 *${safeName}*\n📞 *${safePhone}*\n📅 *${safeDate}* at ⏰ *${safeTime}*\n👥 *${safeGuests}* guests \n ${transportLine}`;
+    const reconfirmLink = `https://wa.me/${cleanBusinessPhone}?text=${encodeURIComponent(reconfirmText)}`;
+
+    const confirmationMsg = `Hello Mr/Mrs *${safeName}* ! \n\nThis is Rach Tours. We've received your reservation request for:\n\n${tourDetailsText}\n💰 *Total:* $${totalReservationPrice}\n📞 *Phone:* *${safePhone}*\n📅 *Date:* *${safeDate}*\n⏰ *Time:* *${safeTime}*\n👥 *Guests:* *${safeGuests}*\n\n Is this correct?\n   ❌ If no, please\n*Resubmit Again:*\n🔗 https://rach-tours.com \n   ✅ If yes, please\n*Confirm By clicking on the link :*\n ${reconfirmLink}\n\nWe look forward to seeing you soon.Thank you for choosing us! ✨`;
+
     // Admin Notification
     let messageBody = `🔔 *New Reservation Request*\n`;
     messageBody += `══════════════════════\n`;
@@ -142,70 +157,24 @@ exports.createReservation = async (req, res) => {
     messageBody += `══════════════════════\n`;
     messageBody += `🎫 *Tour Details:*\n${tourDetailsText}`;
     messageBody += `\n💰 *Total Price:* $${totalReservationPrice}\n`;
-
     if (safeSpecial) {
       messageBody += `══════════════════════\n`;
       messageBody += `📝 *Note:*\n <|${safeSpecial}|>\n`;
     }
     messageBody += `══════════════════════\n`;
 
-    // Reply Links
-    let cleanPhone = safePhone.replace(/\D/g, "");
-    const businessPhone = MY_PHONE_NUMBER || "212659727363";
-    const cleanBusinessPhone = businessPhone.replace(/\D/g, "");
-
-    const reconfirmText = `✅ Reservation Confirmed :
-👤 *${safeName}*
-📞 *${safePhone}*
-📅 *${safeDate}* at ⏰ *${safeTime}*
-👥 *${safeGuests}* guests 
- ${transportLine}`;
-    const reconfirmLink = `https://wa.me/${cleanBusinessPhone}?text=${encodeURIComponent(reconfirmText)}`;
-
-    // EXACT Requested Format
-    const confirmationMsg = `Hello Mr/Mrs *${safeName}* ! 
-
-This is Rach Tours. We've received your reservation request for:
-
-${tourDetailsText}
-💰 *Total:* $${totalReservationPrice}
-📞 *Phone:* *${safePhone}*
-📅 *Date:* *${safeDate}*
-⏰ *Time:* *${safeTime}*
-👥 *Guests:* *${safeGuests}*
-
- Is this correct?
-   ❌ If no, please
-*Resubmit Again:*
-🔗 https://rach-tours.com 
-   ✅ If yes, please
-*Confirm By clicking on the link :*
- ${reconfirmLink}
-
-We look forward to seeing you soon.Thank you for choosing us! ✨`;
-
     const replyLinkPart = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(confirmationMsg)}`;
 
-    const url = `https://graph.facebook.com/v21.0/${PHONE_NUMBER_ID}/messages`;
-    const headers = {
-      Authorization: `Bearer ${WHATSAPP_TOKEN}`,
-      "Content-Type": "application/json",
-    };
-
-    // --- Database First (Data Integrity) ---
-    // Save to DB BEFORE sending notifications so we never lose a reservation record.
+    // ===================================================================
+    // STEP 1: Save to Database FIRST (critical — must not lose reservations)
+    // ===================================================================
     if (pool) {
       try {
-        const tourNames = selectedTours
-          .map((t) => {
-            const tour = TOURS[t.tourId];
-            return tour ? tour.title : t.tourId;
-          })
-          .join(", ");
+        const tourNames = enrichedTours.map((t) => t.title).join(", ");
 
         await pool.execute(
-          `INSERT INTO reservations (name, phone, tour, tours, date, time, people, total_price, transport, special_request, confirmation_message, status)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')`,
+          `INSERT INTO reservations (name, phone, tour, tours, date, time, people, total_price, transport, special_request, confirmation_message, status, created_at)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', COALESCE(?, CURRENT_TIMESTAMP))`,
           [
             safeName,
             safePhone,
@@ -218,10 +187,9 @@ We look forward to seeing you soon.Thank you for choosing us! ✨`;
             anyTransport ? 1 : 0,
             safeSpecial,
             confirmationMsg,
+            clientCreatedAt || null
           ],
         );
-        if (process.env.NODE_ENV !== "production")
-          console.log("MySQL: Reservation saved.");
       } catch (err) {
         console.error("❌ MySQL insert failed:", err.message);
         return res.status(500).json({
@@ -231,92 +199,124 @@ We look forward to seeing you soon.Thank you for choosing us! ✨`;
       }
     }
 
-    // --- Notifications (Non-Critical, fire after DB success) ---
-    const promises = [];
+    // ===================================================================
+    // STEP 2: Notifications — fire-and-forget, NEVER fail the reservation
+    // ===================================================================
+    const warnings = [];
 
-    // 1. Send Main WhatsApp to Admin
-    const sendAdminMsg = axios.post(
-      url,
-      {
-        messaging_product: "whatsapp",
-        to: MY_PHONE_NUMBER,
-        type: "text",
-        text: { body: messageBody },
-      },
-      { headers },
-    );
-    promises.push(sendAdminMsg);
-
-    // 2. Send Reply Link
-    if (replyLinkPart) {
-      const sendReplyLink = axios.post(
-        url,
-        {
-          messaging_product: "whatsapp",
-          to: MY_PHONE_NUMBER,
-          type: "text",
-          text: { body: `👉 *Click to Reply:* ${replyLinkPart}` },
-        },
-        { headers },
-      );
-      promises.push(sendReplyLink);
-    }
-
-    // 3. Google Sheets (Fire-and-forget)
-    const SHEET_URL = process.env.GOOGLE_SHEET_SCRIPT_URL;
-    const SHEET_TOKEN = process.env.GOOGLE_SHEET_API_TOKEN;
-
-    if (SHEET_URL && SHEET_TOKEN) {
-      const sheetPayload = {
-        token: SHEET_TOKEN,
-        date: safeDate,
-        time: safeTime,
-        name: safeName,
-        phone: safePhone,
-        guests: safeGuests,
-        totalPrice: totalReservationPrice,
-        transport: anyTransport,
-        tours: selectedTours.map((t) => {
-          const tour = TOURS[t.tourId];
-          return {
-            title: tour ? tour.title : t.tourId,
-            hasTransport: t.hasTransport,
-          };
-        }),
-        specialRequest: safeSpecial,
+    // WhatsApp (non-blocking)
+    if (isEnabled(process.env.SEND_TO_WHATSAPP)) {
+      const url = `https://graph.facebook.com/v21.0/${PHONE_NUMBER_ID}/messages`;
+      const headers = {
+        Authorization: `Bearer ${WHATSAPP_TOKEN}`,
+        "Content-Type": "application/json",
       };
 
-      axios
-        .post(SHEET_URL, sheetPayload)
-        .then(() => {
-          if (process.env.NODE_ENV !== "production")
-            console.log("Google Sheet updated.");
-        })
-        .catch((err) =>
-          console.error("❌ Failed to update Google Sheet:", err.message),
-        );
+      // Fire both WhatsApp messages, catch errors individually
+      Promise.all([
+        axios
+          .post(
+            url,
+            {
+              messaging_product: "whatsapp",
+              to: MY_PHONE_NUMBER,
+              type: "text",
+              text: { body: messageBody },
+            },
+            { headers },
+          )
+          .catch((err) => {
+            console.error(
+              "⚠️ WhatsApp admin msg failed:",
+              err.response?.data || err.message,
+            );
+          }),
+        axios
+          .post(
+            url,
+            {
+              messaging_product: "whatsapp",
+              to: MY_PHONE_NUMBER,
+              type: "text",
+              text: { body: `👉 *Click to Reply:* ${replyLinkPart}` },
+            },
+            { headers },
+          )
+          .catch((err) => {
+            console.error(
+              "⚠️ WhatsApp reply link failed:",
+              err.response?.data || err.message,
+            );
+          }),
+      ]).catch(() => {}); // Safety net — never throw
     }
 
-    // Wait for WhatsApp notifications
-    await Promise.all(promises);
-    if (process.env.NODE_ENV !== "production")
-      console.log("All notifications sent successfully.");
+    // Google Sheets (non-blocking)
+    if (isEnabled(process.env.SEND_TO_GOOGLE_SHEETS)) {
+      const SHEET_URL = process.env.GOOGLE_SHEET_SCRIPT_URL;
+      const SHEET_TOKEN = process.env.GOOGLE_SHEET_API_TOKEN;
 
+      if (SHEET_URL && SHEET_TOKEN) {
+        axios
+          .post(SHEET_URL, {
+            token: SHEET_TOKEN,
+            date: safeDate,
+            time: safeTime,
+            name: safeName,
+            phone: safePhone,
+            guests: safeGuests,
+            totalPrice: totalReservationPrice,
+            transport: anyTransport,
+            tours: enrichedTours.map((t) => ({
+              title: t.title,
+              hasTransport: t.hasTransport,
+            })),
+            specialRequest: safeSpecial,
+          })
+          .catch((err) =>
+            console.error("⚠️ Google Sheet update failed:", err.message),
+          );
+      }
+    }
+
+    // ===================================================================
+    // STEP 3: Return success immediately — reservation is saved
+    // ===================================================================
     return res
       .status(200)
       .json({ success: true, message: "Reservation Confirmed" });
   } catch (error) {
-    console.error(
-      "WhatsApp API Error:",
-      error.response ? error.response.data : error.message,
-    );
+    console.error("Reservation error:", error.message);
     return res.status(500).json({
       success: false,
-      message: "Failed to send WhatsApp message.",
-      // Only expose error details in development
-      ...(process.env.NODE_ENV !== "production" && {
-        error: error.response ? error.response.data : error.message,
-      }),
+      message: "Failed to process reservation.",
     });
+  }
+};
+
+/**
+ * GET /api/confirmed-bookings
+ * Public endpoint — returns only date+time for confirmed bookings (no PII).
+ */
+exports.getConfirmedBookings = async (req, res) => {
+  if (!pool) {
+    return res.json({ success: true, data: [] });
+  }
+
+  try {
+    const [rows] = await pool.execute(
+      `SELECT date, time, created_at FROM reservations WHERE status = 'confirmed' ORDER BY date ASC`,
+    );
+
+    const bookings = rows.map((r) => ({
+      date: r.date,
+      time: r.time || null,
+      created_at: r.created_at || null,
+    }));
+
+    return res.json({ success: true, data: bookings });
+  } catch (err) {
+    console.error("Confirmed bookings error:", err.message);
+    return res.json({ success: true, data: [] });
   }
 };

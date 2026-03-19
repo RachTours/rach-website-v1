@@ -5,15 +5,17 @@ const reservationValidation = [
     .trim()
     .notEmpty()
     .withMessage("Name is required")
-    .isLength({ max: 100 })
-    .withMessage("Name too long")
+    .isLength({ min: 2, max: 100 })
+    .withMessage("Name must be 2-100 characters")
     .escape(),
   body("phone")
     .trim()
     .notEmpty()
     .withMessage("Phone is required")
-    .isLength({ max: 30 })
-    .withMessage("Phone too long"),
+    .isLength({ min: 7, max: 30 })
+    .withMessage("Phone must be 7-30 characters")
+    .matches(/^\+?[\d\s\-()]{7,30}$/)
+    .withMessage("Invalid phone number format"),
   body("date")
     .trim()
     .notEmpty()
@@ -42,7 +44,11 @@ const reservationValidation = [
     .withMessage("At least one tour must be selected"),
   body("selectedTours.*.tourId")
     .notEmpty()
-    .withMessage("Each tour must have a tourId"),
+    .withMessage("Each tour must have a tourId")
+    .isString()
+    .withMessage("Tour ID must be a string")
+    .isLength({ max: 50 })
+    .withMessage("Tour ID too long"),
   body("selectedTours.*.hasTransport")
     .optional()
     .isBoolean()

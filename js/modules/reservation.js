@@ -177,6 +177,10 @@ export async function handleReservation(event) {
       hasTransport: !!state.transportSelections[tourId],
     }));
 
+    // Calculate user's local time in MySQL format (YYYY-MM-DD HH:mm:ss)
+    const tzoffset = (new Date()).getTimezoneOffset() * 60000;
+    const localISOTime = (new Date(Date.now() - tzoffset)).toISOString().slice(0, 19).replace('T', ' ');
+
     const formData = {
       name: name,
       phone: phone,
@@ -185,6 +189,7 @@ export async function handleReservation(event) {
       guests: guests,
       special: special,
       selectedTours: structuredSelectedTours, // Send the array, not the string representation
+      clientCreatedAt: localISOTime
     };
 
     const response = await fetch("/api/send-whatsapp", {

@@ -13,14 +13,20 @@ const TRANSPORT_FEE = 0; // dont change it
 
 const TOURS = {
   // === LOCAL TOURS & EXPERIENCES ===
- 
+
   "souk-tour": {
     title: "Agadir Souk El Had Tour",
     subtitle: "Experience Agadir's largest market",
     category: "Local Tours & Experiences",
     hideTransport: false,
     price: 15,
-    images: ["img/souk.png", "https://github.com/RachTours/rach-website-v1/blob/main/img/airport.png?raw=true","img/pic4.jpg", "img/pic6.jpg", "https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AA1Iz5XP.img"],
+    images: [
+      "img/souk.png",
+      "https://cdn.getyourguide.com/image/format=auto,fit=crop,gravity=auto,quality=60,height=720,dpr=1/tour_img/62b1ef207e7f5.jpeg",
+      "https://cdn.getyourguide.com/image/format=auto,fit=crop,gravity=auto,quality=60,height=720,dpr=1/tour_img/2bd19e88b9263066d18976f2637cb1a5c051a55d6e2a16dcd35d3fc8e5aa76d3.jpg",
+      "https://cdn.getyourguide.com/image/format=auto,fit=crop,gravity=auto,quality=60,height=720,dpr=1/tour_img/6491986965f5d.jpeg",
+      "https://cdn.getyourguide.com/image/format=auto,fit=crop,gravity=auto,quality=60,height=720,dpr=1/tour_img/62b1ef20ec205.jpeg",
+    ],
     details: [
       "Duration: 1-4 Hours",
       "Pick up: Any time",
@@ -34,7 +40,7 @@ const TOURS = {
     category: "Local Tours & Experiences",
     hideTransport: false,
     price: 30,
-    images: ["img/small-desert.jpg", "img/dunes.png", "img/pic7.jpg"],
+    images: [ "img/small-desert.jpg", "img/dunes.png", "img/pic7.jpg", "https://cdn.getyourguide.com/image/format=auto,fit=crop,gravity=auto,quality=60,height=720,dpr=1/tour_img/d5cf9802aa524eb7.jpeg","https://cdn.getyourguide.com/image/format=auto,fit=crop,gravity=auto,quality=60,height=720,dpr=1/tour_img/d81eea3ec8f05e38.jpeg"],
     details: [
       "Duration: 5-6 Hours",
       "Pick up: Any time",
@@ -133,7 +139,12 @@ const TOURS = {
     category: "Local Tours & Experiences",
     price: 40,
     hideTransport: true,
-    images: ["img/airport.png", "img/pic2.jpg", "img/pic6.jpg","https://www.bing.com/images/search?view=detailV2&ccid=kO8MeGEn&id=21763067310EC4115310C50E57B0A1032F21C55E&thid=OIP.kO8MeGEnIDkbiBcZj-91MAHaFF&mediaurl=https%3A%2F%2Ftaxi-dubai.ae%2Fwp-content%2Fuploads%2F2020%2F01%2F11-768x528.jpg&q=airport+transfers&ck=B59D5B0AEAD384D71937CE3457A908E7&expw=768&exph=528&form=rc2idp&cit=ccid_DbQcJJZU*cp_259E91C1DA1CE0F358DADBF509645009*mid_C585A44725D51EC431512E0CF91E59B0FD45A78F*thid_OIP.DbQcJJZUIPDutXiDAiecSwHaE8&selectedindex=0&cdnurl=https%3A%2F%2Fth.bing.com%2Fth%2Fid%2FR.90ef0c78612720391b8817198fef7530%3Frik%3DXsUhLwOhsFcOxQ%26pid%3DImgRaw%26r%3D0&vt=2&sim=11"],
+    images: [
+      "img/airport.png",
+      "img/pic2.jpg",
+      "img/pic6.jpg",
+      "https://www.bing.com/images/search?view=detailV2&ccid=kO8MeGEn&id=21763067310EC4115310C50E57B0A1032F21C55E&thid=OIP.kO8MeGEnIDkbiBcZj-91MAHaFF&mediaurl=https%3A%2F%2Ftaxi-dubai.ae%2Fwp-content%2Fuploads%2F2020%2F01%2F11-768x528.jpg&q=airport+transfers&ck=B59D5B0AEAD384D71937CE3457A908E7&expw=768&exph=528&form=rc2idp&cit=ccid_DbQcJJZU*cp_259E91C1DA1CE0F358DADBF509645009*mid_C585A44725D51EC431512E0CF91E59B0FD45A78F*thid_OIP.DbQcJJZUIPDutXiDAiecSwHaE8&selectedindex=0&cdnurl=https%3A%2F%2Fth.bing.com%2Fth%2Fid%2FR.90ef0c78612720391b8817198fef7530%3Frik%3DXsUhLwOhsFcOxQ%26pid%3DImgRaw%26r%3D0&vt=2&sim=11",
+    ],
     details: [
       "Private comfortable vehicle",
       "Professional driver",

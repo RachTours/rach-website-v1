@@ -265,9 +265,8 @@ app.use((err, req, res, next) => {
 });
 
 // --- Server Activation ---
-const serverPort = process.env.PORT || 3005;
-app.listen(serverPort, async () => {
-  console.log(`🚀 Server is running on port ${serverPort}`);
+app.listen(PORT, async () => {
+  console.log(`🚀 Server is running on port ${PORT}`);
   console.log(`   Environment: ${isProduction ? "PRODUCTION" : "DEVELOPMENT"}`);
   await initDatabase();
 });
