@@ -1,0 +1,60 @@
+# Standard .htaccess — Security Headers & Access Control
+
+Options -Indexes
+
+# --- HTTPS Redirect (Hostinger) ---
+
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.\*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# --- Security Headers (Apache fallback for static files) ---
+
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "DENY"
+  Header always set X-XSS-Protection "0"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation()"
+</IfModule>
+
+# --- Block access to sensitive files ---
+
+<FilesMatch "\.(env|log|gitignore|lock)$">
+  Require all denied
+</FilesMatch>
+<FilesMatch "^(package\.json|package-lock\.json)$">
+Require all denied
+</FilesMatch>
+
+# Explicitly block server-side files
+
+<FilesMatch "^(server\.js|app\.js|Procfile|check_db\.js)$">
+Require all denied
+</FilesMatch>
+
+# Block access to sensitive directories
+
+RedirectMatch 403 ^/src/
+RedirectMatch 403 ^/node_modules/
+RedirectMatch 403 ^/rach_admin/
+RedirectMatch 403 ^/tests/
+
+# --- Cache Control for static assets ---
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType font/woff "access plus 1 year"
+</IfModule>
+
+# --- Compression ---
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json
+</IfModule>

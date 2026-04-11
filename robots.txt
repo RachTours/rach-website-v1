@@ -1,0 +1,10 @@
+# Standard Robots.txt for Rach Tours
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+Disallow: /dashboard/
+Disallow: /auth/
+Disallow: /private/
+
+Sitemap: https://rach-tours.com/sitemap.xml

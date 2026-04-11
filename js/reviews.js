@@ -1,0 +1,305 @@
+// Reviews Data
+const REVIEWS = [
+  {
+    id: 1,
+    name: "Abdou Bouchich",
+    stars: 5,
+    text: "Had an amazing experience at timlaline Heritage! The quads were powerful and well-maintained, and riding through the dunes with the ocean view nearby felt incredible. Sand surfing was a lot of fun too – perfect mix of adventure and relaxation by the beach. The team was super friendly and made sure everything felt safe. Highly recommend for anyone visiting the area! 🌴🏖️🏜️",
+  },
+  {
+    id: 2,
+    name: "Angharad Preston",
+    stars: 5,
+    text: "We had the best time Quad Biking and Camel Riding. I wasn’t sure nervous to start having fallen off a quad previously, but I soon became confident thanks to the amazing instructor who made me feel so confident. He took fabulous photos of us and we truly had the best time. Highly recommended",
+  },
+  {
+    id: 3,
+    name: "Carolin H.",
+    stars: 5,
+    text: "We had an amazing experience with Timlaline Heritage Tours! Communication via WhatsApp was super easy—our guide always replied very quickly and was extremely helpful and friendly. He took us to a stunning viewpoint with breathtaking scenery, and in the canyon, he captured some beautiful photos and videos of us. The sandboarding was so much fun—even though we had no prior experience, we got the hang of it really quickly. To top it all off, we went quad biking in the desert at what must be the best spot in the entire region: golden sand dunes with the ocean in the background. It was absolutely magical. Highly recommended!",
+  },
+  {
+    id: 4,
+    name: "El i",
+    stars: 5,
+    text: "The tour guide was really nice and helpful! When I wanted to book the tour, he responded very fast and answered all of my questions. Tour was really nice and everything we wanted to see, he showed us.",
+  },
+  {
+    id: 5,
+    name: "Malak Al-Mousa",
+    stars: 5,
+    text: "We had the pleasure of doing sandboarding with Timlaline Heritage Tours—what an amazing experience! From start to finish, our guide was absolutely phenomenal: kind, patient, and so helpful. He was incredibly sweet with my kids—always encouraging them, checking they were safe, and making sure they had fun. His warm demeanor made a big impression on them (and on us). Every step of the way, he took the time to explain how to sandboard properly, demonstrating and supporting us as we tackled different dunes. The scenery at the Timlalin dunes is breathtaking—the golden sand shimmering beside the Atlantic Ocean. But what really made the day special was his kindness and generosity. Whether it was helping us secure our boards or offering words of encouragement to the kids, he made the outing comfortable and memorable. We felt completely at ease under his guidance. He seamlessly balanced safety with adventure, ensuring that even beginners felt confident—and that the kids were always smiling. I wholeheartedly recommend Timlaline Heritage Tours to anyone interested in sandboarding—or just looking for a beautiful family adventure near Agadir. This guide truly went above and beyond. If you want a friendly, professional, and genuinely caring experience, this is it.",
+  },
+  {
+    id: 6,
+    name: "Farras Otman",
+    stars: 5,
+    text: "I had an amazing time in Timalalin. The quad tour was exciting and safe, the sandboarding was so much fun, and the traditional seating area was very relaxing with a beautiful view of the dunes. The staff were friendly and made the whole experience special. I highly recommend this place to anyone visiting the area.",
+  },
+  {
+    id: 7,
+    name: "Mister Charmz",
+    stars: 5,
+    text: "The tour on the quad was great, there were beautiful spots to see and absorb. We were serviced immediately upon arrival and the prices were very reasonable !",
+  },
+  {
+    id: 8,
+    name: "Chloe London",
+    stars: 5,
+    text: "Such a good time! Rachid’s great. Would 100% recommend. This is the spot to book :)",
+  },
+  {
+    id: 9,
+    name: "dennis fi",
+    stars: 5,
+    text: "It was a blast, we absolutely loved it! The quads and the place were amazing and the owner was very nice and helpful with everything. It definetly was the highlight of our vacation.",
+  },
+  {
+    id: 10,
+    name: "Osama Rehman",
+    stars: 5,
+    text: "Had a fantastic time! The ATVs were in great condition and riding across the golden dunes was such a thrill. The guides were really welcoming and made the whole experience smooth and safe. Definitely a must-do for anyone looking for a mix of excitement and breathtaking views!",
+  },
+  {
+    id: 11,
+    name: "Nadia Ouchaikh",
+    stars: 5,
+    text: "Such a lovely time! Truly recommend 🥰 Thank you Rachid for your warm guidance and thoughtful support throughout the journey! Had an amazing experience sandboarding and riding the quad unforgettable fun and adventure! 🏂🏍️",
+  },
+  {
+    id: 12,
+    name: "James Warburton",
+    stars: 5,
+    text: "Rachid and Mohammed was amazing from the moment we was collected from the hotel, great hospitality and telling us facts about the local area, we went to an amazing setting where Rachid took us to the dunes to teach us how to sand board, nothing was too much trouble and on the way home we even stopped off for fresh banana to help resupply our energy levels. We would highly recommend doing a trip with them.",
+  },
+  {
+    id: 13,
+    name: "Nino Amigo",
+    stars: 5,
+    text: "Amazing moment great hospitality and experience we had amazing afternoon we start with Quad and Sandboarding in beautiful sunset thanks to Rachid he was a great host I really recommend him to visit this place 😊",
+  },
+  {
+    id: 14,
+    name: "Chaz Yeung",
+    stars: 5,
+    text: "Rachid was very energetic and welcoming, and spoke excellent English, which made the whole experience even better. Overall, it was a fantastic day that I would highly recommend. We drove down to Tamri, and from there there’s a bit of walking involved. In hindsight, I would have opted for the camel ride instead, which I didn’t do this time. From the main road to the canyon and sandboarding dunes, it’s a bit of a trek—so if you’re not keen on walking, definitely consider the camel ride. We hired quads and a buggy from a local company, with Abdullah as our scout. He was great—took us across beautiful clear dunes, with a break in the middle on an empty beach that felt like our own private spot. Afterwards, we continued with a scenic canyon walk around the cliffs. Lunch was a highlight: a beautifully prepared tagine, followed by tea and biscuits with Yusuf, another warm and welcoming host alongside Rachid. The day ended with a relaxed dinner and a bonfire under parasol—it was long but never felt rushed. A truly memorable excursion, and I’d happily do it again.",
+  },
+  {
+    id: 15,
+    name: "Enchzin Zugder",
+    stars: 5,
+    text: "Rachid said I'm here for your happiness during the excursion and I believed him. He showed us through genuine care and service, absolute gent. Private ride from Agadir, camel ride through the dunes overlooking the ocean and cliffs, private dining area with candles and small bone fire, the best mint tea I had in Morocco with tasty biscuits, and the best Tajine I've ever had as well. Rachid was there to make our experience and evening the best. He was happy to take our photos and videos and give suggestions to where to stand. It was text book hospitality and service! We had the best date and evening ever and it's all thanks to Rachid. I highly recommend any excursions or tours!",
+  },
+  {
+    id: 16,
+    name: "YASSINE AMARIR",
+    stars: 5,
+    text: "I had a wonderful experience in Timlalin. The place is beautiful and peaceful, and everything was well organized. A special thank you to Rachid, who was incredibly kind and helpful throughout our stay. His warm welcome and availability made a real difference. Thanks to him, everything went smoothly, and we felt truly cared for. I highly recommend this experience to anyone looking for authenticity, calm, and great hospitality.",
+  },
+  {
+    id: 17,
+    name: "Rchouk Youness",
+    stars: 5,
+    text: "It was a new experience for me. It was truly beautiful, especially with Mohamed and Rachid. They created a great atmosphere, professional, respectful, really nothing to complain about. I highly recommend this experience for visitors to Agadir.",
+  },
+  {
+    id: 18,
+    name: "Roy Loeffen",
+    stars: 5,
+    text: "Great sandboarding experience! Rachid is friendly, supporting and caring. Definitely recommendable! Booked the night before and everything was arranged very quickly.",
+  },
+  {
+    id: 19,
+    name: "Charlotte Le Blevec",
+    stars: 5,
+    text: "Amazing experience, you can do surfing on the sand and visit the canyon. The view is amazing and Rachid is very nice !",
+  },
+  {
+    id: 20,
+    name: "Issam Alaoui",
+    stars: 5,
+    text: "An amazing guide! Rachid is a super friendly and very patient guide. We had a great time with him, both on the road and during the activities he organized for us, like sandboarding. Thanks for your good energy and professionalism — we 100% recommend him",
+  },
+  {
+    id: 21,
+    name: "Otmane",
+    stars: 5,
+    text: "The quad tour in Timlalin Tamri Village was amazing! The ride was so fun, and the guys running it were super friendly and helpful. Highly recommend!",
+  },
+  {
+    id: 22,
+    name: "Demi1994 Playfoot",
+    stars: 5,
+    text: "really great experience sand boarding and quad biking! we saw some traditional homes right next to the sea and they let us taste a muscle they’d just brought in from sea. our guide for sand boarding was helpful, kind and accommodating 😊 thank you!",
+  },
+  {
+    id: 23,
+    name: "Shiv Malik",
+    stars: 5,
+    text: "Rashid was an excellent guide. Wonderfully relaxed and also incredibly helpful, even taking some on-the-move videos for us. Would really recommend.",
+  },
+  {
+    id: 24,
+    name: "Coco Goodbody-Stannard",
+    stars: 5,
+    text: "We had a great time. Really chilled environment and a lovely chatty guide. Provided water and a snack, as well as a quick tour of a local canyon. Definitely recommend!!",
+  },
+  {
+    id: 25,
+    name: "L Hof",
+    stars: 5,
+    text: "We’ve had a great day sandboarding, Rachid was a great host - thank you so much!! :)",
+  },
+  {
+    id: 26,
+    name: "Léon Roskam",
+    stars: 5,
+    text: "We had an amazing experience! And the guide was really nice! Would definitly reccomend",
+  },
+  {
+    id: 27,
+    name: "Zubiar Anik",
+    stars: 5,
+    text: "Rachid and his team were very well mannered and flexible. Thoroughly enjoyed our desert excursion. Suitable for couples. All the best for their future ventures.",
+  },
+  {
+    id: 28,
+    name: "kenza elalami",
+    stars: 5,
+    text: "We had such a beautiful experience with rachid, he was so nice, took good care of us and was so attentive, I definitely recommend it to everyone that wants to discover the beauty of Morocco",
+  },
+  {
+    id: 29,
+    name: "Greg explore",
+    stars: 5,
+    text: "Great experience with an awesome team! Lots of fun in a little desert by the ocean.",
+  },
+  {
+    id: 30,
+    name: "Chethan Babu",
+    stars: 5,
+    text: "Rachid had everything organised for us. Sand boarding, camel riding and quad biking. Great experience at a unique location (mountains on one side, sea on the other and dessert in the middle). Thanks for a wonderful experience",
+  },
+  {
+    id: 31,
+    name: "Lavenia Hardiman",
+    stars: 5,
+    text: "Rachid was extremely attentive and a true gentleman. He took pictures and photos for us and even carried my bag back to the road. He provided excellent service.",
+  },
+  {
+    id: 32,
+    name: "Marc Berenguer",
+    stars: 5,
+    text: "Fun experience, beautiful place. Rahid is really friendly and caring!",
+  },
+  {
+    id: 33,
+    name: "Mitch Harris",
+    stars: 5,
+    text: "Rachid was a great guide with our sand boarding and helped us out a lot for a very affordable price.",
+  },
+  {
+    id: 34,
+    name: "Gabriel Naudé",
+    stars: 5,
+    text: "Awesome experience thanks to Rachid, you can explore the canyons, ride a quad bike and sandboarding. 100% recommanded 👌",
+  },
+  {
+    id: 35,
+    name: "Paul Dewan",
+    stars: 5,
+    text: "Perfect ride, the guide raschid was very helpful in all matters and communication was very easy",
+  },
+  {
+    id: 36,
+    name: "Jérémie",
+    stars: 5,
+    text: "Best adventures with Rachid and his team ! If you looking for a great guide and tour you've find it !",
+  },
+  {
+    id: 37,
+    name: "Isma Elc",
+    stars: 5,
+    text: "Amazing people and place to visit",
+  },
+  {
+    id: 38,
+    name: "Júlia Portella Fortuny",
+    stars: 5,
+    text: "fun and beautiful experience! Rahid is the best",
+  },
+  {
+    id: 39,
+    name: "Hamza Afani",
+    stars: 5,
+    text: "Nice service and amazing activities worth trying!",
+  },
+  {
+    id: 40,
+    name: "Katie Presneill",
+    stars: 5,
+    text: "So helpful and lovely. Felt really comfortable and was fun!",
+  },
+  {
+    id: 41,
+    name: "Sara Styza",
+    stars: 5,
+    text: "It was soooooo much fun!!! Go with the flow 🤟🏼",
+  },
+  {
+    id: 42,
+    name: "Tom Bohländer",
+    stars: 5,
+    text: "Nice service and really friendly stuff",
+  },
+  {
+    id: 43,
+    name: "Mako Kołodziej",
+    stars: 5,
+    text: "Good time with guys! Must to do when you in taghazout",
+  },
+
+  {
+    id: 44,
+    name: "Yassine Bouchiche",
+    stars: 5,
+    text: "Disfruté de esta maravillosa experiencia, especialmente de las doradas arenas del desierto, los enormes camellos y también de la increíble puesta de sol. Fue un momento inolvidable.",
+  },
+  {
+    id: 45,
+    name: "yasmina benhalima",
+    stars: 5,
+    text: "Une experience magic avec le groupe , bien organisé, facile accessible . Avec un bon tagine vue sur la colline timlaline",
+  },
+  {
+    id: 46,
+    name: "Grethe Kehler",
+    stars: 5,
+    text: "Wir hatten einen erlebnisreichen und wunderbaren Tag! Wir haben die Absprache vorher per WhatsApp gemacht, das hat super geklappt. In den Dünen wurden wir sehr gut geleitet und geführt, unsere Jungs waren sehr hilfsbereit und freundlich. Das Quadfahren hat uns viel Spaß gemacht, genauso wie das Sandboarden. Auch der Canyon war sehr beeindruckend und unsere Jungs haben tolle Fotos von uns gemacht. Als es überraschend einen kleinen Unfall gab und unsere Guides uns verlassen mussten, wurde sofort sichergestellt, dass jemand anderes sich uns annimmt. Wie gesagt- alle dort waren sehr hilfsbereit, unabhängig davon, ob sie zur selben Organisation gehörten, die wir gebucht hatten oder nicht. Den Abend haben wir am Feuer mit verschiedenen Früchten und Sonnenuntergang ausklingen lassen. Sehr empfehlenswert!",
+  },
+  {
+    id: 47,
+    name: "Karine Jaulard",
+    stars: 5,
+    text: "Je recommande pour la découverte de lieux uniques avec des guides super sympas.",
+  },
+  {
+    id: 48,
+    name: "Siham Elmoudden",
+    stars: 5,
+    text: "تبارك الله عليك احسن تعامل داري زوين و كيتعمل زوين عجبني تما بزاف نبغيكم تحربوه",
+  },
+  {
+    id: 49,
+    name: "Guerard Yoan",
+    stars: 5,
+    text: "Magnifique !! Quad et sand board au coucher de soleil, les gars étaient pros et aimable! Je le referai !",
+  },
+];
+
+// Universal Export (Node.js & Browser)
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = { REVIEWS };
+} else {
+  window.REVIEWS = REVIEWS;
+}

@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+.env
+
+# Environment template
+!.env.example
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+crash.log
+*.log
+
+# Debug scripts
+check_db.js
+
+# Uploaded images
+uploads/
+
+# Editor
+.vscode/
+.idea/
+
+# Flutter (rach_admin is a separate project)
+rach_admin/
+
+# Agent
+.agent/
+.gemini/

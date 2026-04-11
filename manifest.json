@@ -1,0 +1,21 @@
+{
+  "name": "Rach Tours | Premium Morocco Experiences",
+  "short_name": "Rach Tours",
+  "description": "Premium Tours & Experiences in Agadir & Taghazout, Morocco.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1a1a2e",
+  "theme_color": "#1a1a2e",
+  "icons": [
+    {
+      "src": "img/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "img/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
