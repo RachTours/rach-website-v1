@@ -91,7 +91,7 @@ const TOURS = {
     category: "Local Tours & Experiences",
     price: 40,
     hideTransport: true,
-    images: ["img/airport.png"],
+    images: ["img/airport.webp"],
     details: [
       "Private comfortable vehicle",
       "Professional driver",
