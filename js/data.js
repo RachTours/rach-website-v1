@@ -21,7 +21,7 @@ const TOURS = {
     category: "Local Tours & Experiences",
     hideTransport: false,
     price: 30,
-    images: ["img/small-desert.jpg", "img/dunes.png", "img/pic7.jpg"],
+    images: ["img/post1-1.webp", "img/post1-2.webp", "img/post1-3.webp" , "img/post1-4.webp"],
     details: [
       "Duration: 5-6 Hours",
       "Pick up: Any time",
@@ -37,7 +37,20 @@ const TOURS = {
     category: "Local Tours & Experiences",
     hideTransport: false,
     price: 65,
-    images: ["img/dunes.png", "img/pic4.jpg"],
+    images: ["img/post2-1.webp", "img/post2-2.webp", "img/post2-3.webp"],
+    details: [
+      "Duration: 1 Hours (driving)",
+      "Safety briefing and gear included",
+      "Tea break (optinal)",
+    ],
+  },
+  "sunset-tea": {
+    title: "Sunset Tea",
+    subtitle: "Enjoy a peaceful sunset tea timlalin dunes experience",
+    category: "Local Tours & Experiences",
+    hideTransport: false,
+    price: 15,
+    images: [ "img/post4-1.webp", "img/post4-2.webp", "img/post4-3.webp", "img/post4-4.webp", "img/post4-5.webp"],
     details: [
       "Duration: 1 Hours (driving)",
       "Safety briefing and gear included",
@@ -50,15 +63,27 @@ const TOURS = {
     hideTransport: false,
     category: "Local Tours & Experiences",
     price: 30,
-    images: ["img/dunes.png", "img/pic7.jpg"],
+    images: ["img/post3-1.webp", "img/post3-2.webp", "img/post3-3.webp", "img/post3-4.webp", "img/post3-5.webp"],
     details: [
-      "Duration: 1 Hours",
-      "Ride through dunes and beach",
-      "Safety equipment provided",
-      "Briefing for beginners",
+      "Duration: 2–3 Hours",
+      "relaxing Sunset Tea session",
+      "watching the sun disappear into the Atlantic Ocean",
+      "enjoy traditional Moroccan tea",
     ],
   },
- 
+ "sunset-tea": {
+    title: "Sunset Tea",
+    subtitle: "Enjoy a peaceful sunset tea timlalin dunes experience",
+    category: "Local Tours & Experiences",
+    hideTransport: false,
+    price: 15,
+    images: [ "img/post4-1.webp", "img/post4-2.webp", "img/post4-3.webp", "img/post4-4.webp", "img/post4-5.webp"],
+    details: [
+      "Duration: 1 Hours (driving)",
+      "Safety briefing and gear included",
+      "Tea break (optinal)",
+    ],
+  },
  
   "airport-transfer": {
     title: "Airport Transfer",
@@ -66,7 +91,7 @@ const TOURS = {
     category: "Local Tours & Experiences",
     price: 40,
     hideTransport: true,
-    images: ["img/airport.png", "img/pic2.jpg", "img/pic6.jpg","https://www.bing.com/images/search?view=detailV2&ccid=kO8MeGEn&id=21763067310EC4115310C50E57B0A1032F21C55E&thid=OIP.kO8MeGEnIDkbiBcZj-91MAHaFF&mediaurl=https%3A%2F%2Ftaxi-dubai.ae%2Fwp-content%2Fuploads%2F2020%2F01%2F11-768x528.jpg&q=airport+transfers&ck=B59D5B0AEAD384D71937CE3457A908E7&expw=768&exph=528&form=rc2idp&cit=ccid_DbQcJJZU*cp_259E91C1DA1CE0F358DADBF509645009*mid_C585A44725D51EC431512E0CF91E59B0FD45A78F*thid_OIP.DbQcJJZUIPDutXiDAiecSwHaE8&selectedindex=0&cdnurl=https%3A%2F%2Fth.bing.com%2Fth%2Fid%2FR.90ef0c78612720391b8817198fef7530%3Frik%3DXsUhLwOhsFcOxQ%26pid%3DImgRaw%26r%3D0&vt=2&sim=11"],
+    images: ["img/airport.png"],
     details: [
       "Private comfortable vehicle",
       "Professional driver",
@@ -84,7 +109,7 @@ const TOURS = {
     category: "Day Trips & Excursions",
     hideTransport: false,
     price: 25,
-    images: ["img/dunes.png", "img/pic7.jpg"],
+    images: [ "img/post5-1.webp", "img/post5-2.webp", "img/post5-3.webp", "img/post5-4.webp"],
     details: [
       "Full day adventure",
       "Explore massive sand dunes",
@@ -98,7 +123,7 @@ const TOURS = {
     category: "Day Trips & Excursions",
     hideTransport: false,
     price: 25,
-    images: ["img/horse-ride.png", "img/pic1.jpg"],
+    images: [ "img/post6-1.webp", "img/post6-2.webp", "img/post6-3.webp", "img/post6-4.webp"],
     details: [
       "1 Hours riding experience",
       "Flamingo spotting (seasonally)",
@@ -111,7 +136,7 @@ const TOURS = {
     category: "Day Trips & Excursions",
     hideTransport: false,
     price: 25,
-    images: ["img/dunes.png", "img/pic7.jpg"],
+    images: [ "img/post7-1.webp", "img/post7-2.webp", "img/post7-3.webp", "img/post7-4.webp"],
     details: [
       "Combine with half-day desert trip",
       "Boards provided",
